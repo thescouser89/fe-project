@@ -136,8 +136,10 @@ ub = [inf; inf; inf];
 lb = [0; 0; 0];
 
 x_axis = []
+y_axis_R = []
 y_axis = []
-for m = 0:0.00005:0.0060
+for m = 0:0.00005:0.0055
+    y_axis_R = [y_axis_R; m];
     b = -[m];
     [x, fval] = quadprog(Q, c, A, b, Aeq, beq, lb, ub);
     x_axis = [x_axis; fval];
@@ -145,13 +147,13 @@ for m = 0:0.00005:0.0060
     y_axis = [y_axis; expected_return];
 end
 
-plot(x_axis, y_axis);
+plot(x_axis, y_axis_R);
 title('Efficient Frontier');
 ylabel('Expected Return R');
 xlabel('Portfolio Variance');
 
 tix=get(gca,'xtick')';
-set(gca,'xticklabel',num2str(tix,'%.4f'))
+set(gca,'xticklabel',num2str(tix,'%.5f'))
 
 tiy=get(gca,'ytick')';
-set(gca,'yticklabel',num2str(tiy,'%.4f'))
+set(gca,'yticklabel',num2str(tiy,'%.3f'))
