@@ -135,16 +135,26 @@ ub = [inf; inf; inf];
 % no short-selling
 lb = [0; 0; 0];
 
-x_axis = []
-y_axis_R = []
-y_axis = []
+x_axis = [];
+y_axis_R = [];
+y_axis = [];
+weight_spy = [];
+weight_govt = [];
+weight_eemv = [];
+
 for m = 0:0.00005:0.0055
-    y_axis_R = [y_axis_R; m];
     b = -[m];
     [x, fval] = quadprog(Q, c, A, b, Aeq, beq, lb, ub);
-    x_axis = [x_axis; fval];
+
+    weight_spy = [weight_spy; x(1)];
+    weight_govt = [weight_govt; x(2)];
+    weight_eemv = [weight_eemv; x(3)];
+
     expected_return = [expected_return_spy expected_return_govt expected_return_eemv] * x;
+
+    x_axis = [x_axis; fval];
     y_axis = [y_axis; expected_return];
+    y_axis_R = [y_axis_R; m];
 end
 
 plot(x_axis, y_axis_R);
